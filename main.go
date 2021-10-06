@@ -61,14 +61,17 @@ func main() {
 		panic(err.Error())
 	}
 
-	events, _ := clientset.EventsV1().Events("").Watch(context.TODO(), metav1.ListOptions{})
+	//events, _ := clientset.EventsV1().Events("").Watch(context.TODO(), metav1.ListOptions{})
+
+	clientset.CoreV1().RESTClient()
+	events, _ := clientset.CoreV1().Events("").Watch(context.TODO(), metav1.ListOptions{})
+
 	go func() {
 		for {
 			event := <-events.ResultChan()
-			fmt.Println(event)
-			fmt.Println("------------------------------------------")
-			fmt.Println(json.Marshal(event))
 
+			json1, _ := json.Marshal(event)
+			fmt.Printf("%s\n", string(json1))
 
 		}
 	}()
